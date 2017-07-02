@@ -1,0 +1,39 @@
+[*]
+[*] GTKWave Analyzer v3.3.48 (w)1999-2013 BSI
+[*] Sun Jul  2 09:16:22 2017
+[*]
+[dumpfile] "/Users/dirk/dev/d6809/dump.vcd"
+[dumpfile_mtime] "Sun Jul  2 09:15:54 2017"
+[dumpfile_size] 1375
+[savefile] "/Users/dirk/dev/d6809/config.gtkw"
+[timestart] 0
+[size] 1260 731
+[pos] -1 -1
+*-5.181177 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
+[treeopen] bench.
+[sst_width] 203
+[signals_width] 150
+[sst_expanded] 1
+[sst_vpaned_height] 203
+@22
+bench.ctrlunit.AR[15:0]
+bench.ctrlunit.A[7:0]
+bench.ctrlunit.B[7:0]
+bench.ctrlunit.IR[15:0]
+bench.ctrlunit.PC[15:0]
+bench.ctrlunit.T[7:0]
+bench.ctrlunit.X[15:0]
+bench.ctrlunit.Y[15:0]
+@28
+bench.ctrlunit.clk
+@22
+bench.ctrlunit.fetch[3:0]
+bench.ctrlunit.mem_read[3:0]
+bench.ctrlunit.next_state[4:0]
+@28
+bench.ctrlunit.pc_inc
+bench.ctrlunit.reset
+@22
+bench.ctrlunit.state[4:0]
+[pattern_trace] 1
+[pattern_trace] 0
