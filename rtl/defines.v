@@ -11,7 +11,8 @@ localparam
     FETCH_YH  = 9;
 
 localparam
-    MEMREAD_PC     = 0,
-    MEMREAD_AR     = 1,
-    MEMREAD_DP_ARL = 2,
-    MEMREAD_D      = 3;
+    MEMREAD_NONE   = 0,
+    MEMREAD_PC     = 1,
+    MEMREAD_AR     = 2,
+    MEMREAD_DP_ARL = 3,
+    MEMREAD_D      = 4;

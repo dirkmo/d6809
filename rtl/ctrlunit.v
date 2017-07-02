@@ -7,6 +7,7 @@ module CtrlUnit(
     A,
     B,
     T,
+    DP,
     X,
     Y,
     fetch,
@@ -25,10 +26,11 @@ input [15:0] PC;
 input [7:0] A;
 input [7:0] B;
 input [7:0] T;
+input [7:0] DP;
 input [15:0] X;
 input [15:0] Y;
 output reg [3:0] mem_read;
-output reg [3:0] fetch;
+output reg [15:0] fetch;
 output reg pc_inc;
 
 reg [4:0] state;
@@ -62,10 +64,12 @@ begin
     pc_inc = 0;
     case( state )
         IDLE: begin
+            next_state = FETCH_OP;
         end
         FETCH_OP: begin
-            mem_read[MEMREAD_PC] = 1;
+            mem_read = MEMREAD_PC;
             fetch[FETCH_IR] = 1;
+            pc_inc = 1;
             next_state = DECODE;
         end
         DECODE: begin
@@ -74,7 +78,7 @@ begin
             if ( IR[7:4] == 4'h7 || IR[7:4] == 4'hF || IR[7:4] == 4'hB )
             begin
                 next_state = EXTADDR1;
-                mem_read[MEMREAD_PC] = 1;
+                mem_read = MEMREAD_PC;
                 pc_inc = 1;
                 fetch[FETCH_ARH] = 1;
             end else
@@ -86,7 +90,7 @@ begin
             begin
                 // put byte from memory into T
                 next_state = EXECUTE;
-                mem_read[MEMREAD_PC] = 1;
+                mem_read = MEMREAD_PC;
                 fetch[FETCH_T] = 1;
                 pc_inc = 1;
             end else
@@ -103,7 +107,7 @@ begin
             begin
                 // load lower address byte into AR[7:0]
                 next_state = DIRECT;
-                mem_read[MEMREAD_PC] = 1;
+                mem_read = MEMREAD_PC;
                 fetch[FETCH_ARL] = 1;
                 pc_inc = 1;
             end else
@@ -118,7 +122,7 @@ begin
             if( IR==REL_LBRA || IR==REL_LBSR || (IR>=8'h20 && IR<=8'h2F) || IR==REL_BSR )
             begin
                 next_state = RELATIVE;
-                mem_read[MEMREAD_PC] = 1;
+                mem_read = MEMREAD_PC;
                 fetch[FETCH_ARL] = 1;
                 pc_inc = 1;
                 // long relative addressing
@@ -131,6 +135,8 @@ begin
             // indirect
             if( (IR>=8'h30 && IR<=8'h33) || (IR>=8'h60 && IR<=8'h6F) || (IR>=8'hA0 && IR<=8'hAF) || (IR>=8'hE0 && IR<=8'hEF) )
             begin
+                $display("indirect not supported yet.");
+                $stop;
             end else
 
             begin
@@ -141,26 +147,26 @@ begin
         // extended addressing
         EXTADDR1: begin // fetch lower address byte
             next_state = EXTADDR2;
-            mem_read[MEMREAD_PC] = 1;
+            mem_read = MEMREAD_PC;
             pc_inc = 1;
             fetch[FETCH_ARL] = 1;
         end
         EXTADDR2: begin // fetch data from memory into T
             next_state = EXECUTE;
-            mem_read[MEMREAD_AR] = 1;
+            mem_read = MEMREAD_AR;
             fetch[FETCH_T] = 1;
         end
 
         DIRECT: begin
             // read data from memory into T
-            mem_read[MEMREAD_DP_ARL] = 1;
+            mem_read = MEMREAD_DP_ARL;
             fetch[FETCH_T] = 1;
             next_state = EXECUTE;
         end
 
         RELATIVE_LONG: begin
             next_state = RELATIVE;
-            mem_read[MEMREAD_PC] = 1;
+            mem_read = MEMREAD_PC;
             fetch[FETCH_ARL] = 1;
             pc_inc = 1;
         end
